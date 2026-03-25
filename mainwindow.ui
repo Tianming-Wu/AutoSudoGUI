@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QTableWidget" name="tbRules">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>10</y>
+      <width>781</width>
+      <height>471</height>
+     </rect>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>800</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>文件(&amp;F)</string>
+    </property>
+    <addaction name="separator"/>
+    <addaction name="acExit"/>
+   </widget>
+   <widget class="QMenu" name="menuRule">
+    <property name="title">
+     <string>规则(&amp;R)</string>
+    </property>
+    <addaction name="acRefreshRule"/>
+    <addaction name="acNewRule"/>
+   </widget>
+   <addaction name="menuFile"/>
+   <addaction name="menuRule"/>
+  </widget>
+  <widget class="QStatusBar" name="statusBar"/>
+  <action name="acExit">
+   <property name="text">
+    <string>退出(&amp;X)</string>
+   </property>
+  </action>
+  <action name="acRefreshRule">
+   <property name="text">
+    <string>刷新(F5)</string>
+   </property>
+  </action>
+  <action name="acNewRule">
+   <property name="text">
+    <string>新建(&amp;N)</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
