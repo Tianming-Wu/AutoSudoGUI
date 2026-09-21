@@ -5,8 +5,6 @@
 #include <QThread>
 #include <QTimer>
 
-// #include <libpipe.hpp>
-
 #include <AutoSudoSdk/sdk.hpp>
 
 class ServiceCommThrd : public QThread

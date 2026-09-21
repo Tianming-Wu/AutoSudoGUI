@@ -13,7 +13,6 @@ find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets LinguistTools)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets LinguistTools)
 
 find_package(SharedCppLib2 REQUIRED)
-find_package(libpipe REQUIRED)
 find_package(AutoSudoSdk REQUIRED)
 
 set(TS_FILES
@@ -67,7 +66,7 @@ endif()
 
 target_link_libraries(AutoSudoGUI PRIVATE Qt6::Core Qt${QT_VERSION_MAJOR}::Widgets)
 
-target_link_libraries(AutoSudoGUI PRIVATE libpipe::libpipe AutoSudoSdk::AutoSudoSdk)
+target_link_libraries(AutoSudoGUI PRIVATE AutoSudoSdk::AutoSudoSdk)
 
 target_link_libraries(AutoSudoGUI PRIVATE
     SharedCppLib2::logt
