@@ -32,6 +32,7 @@ public slots:
     void onRulesListResponse(std::vector<RuleEntry> rl);
     void onTableRowsMoved(); // Handle table drag reorder
     void onRuleCellChanged(QTableWidgetItem* item);
+    void onDeleteRule();
 
 protected:
     bool eventFilter(QObject *watched, QEvent *event) override;
@@ -45,6 +46,7 @@ private:
     EditWindow* ew = nullptr;
     bool m_loadingRules = false;
     bool m_reorderingRows = false;
+    QString m_lastSubmitted;
     
 };
 #endif // MAINWINDOW_H

@@ -4,85 +4,111 @@
 <context>
     <name></name>
     <message id="rule.field.order">
-        <location filename="../mainwindow.cpp" line="31"/>
+        <location filename="../mainwindow.cpp" line="32"/>
         <source></source>
         <translation>Order</translation>
     </message>
     <message id="rule.field.uid">
-        <location filename="../mainwindow.cpp" line="31"/>
+        <location filename="../mainwindow.cpp" line="32"/>
         <source></source>
         <translation>UID</translation>
     </message>
     <message id="rule.field.type">
-        <location filename="../mainwindow.cpp" line="31"/>
+        <location filename="../mainwindow.cpp" line="32"/>
         <location filename="../editwindow.cpp" line="17"/>
         <source></source>
         <translation>Type</translation>
     </message>
     <message id="rule.field.etype">
-        <location filename="../mainwindow.cpp" line="32"/>
+        <location filename="../mainwindow.cpp" line="33"/>
         <location filename="../editwindow.cpp" line="18"/>
         <source></source>
         <translation>Evaluation</translation>
     </message>
     <message id="rule.field.action">
-        <location filename="../mainwindow.cpp" line="32"/>
+        <location filename="../mainwindow.cpp" line="33"/>
         <location filename="../editwindow.cpp" line="19"/>
         <source></source>
         <translation>Action</translation>
     </message>
     <message id="rule.field.payload">
-        <location filename="../mainwindow.cpp" line="32"/>
+        <location filename="../mainwindow.cpp" line="33"/>
         <location filename="../editwindow.cpp" line="16"/>
         <source></source>
         <translation>Payload</translation>
     </message>
     <message id="rule.field.allow_up_to">
-        <location filename="../mainwindow.cpp" line="32"/>
+        <location filename="../mainwindow.cpp" line="33"/>
         <location filename="../editwindow.cpp" line="20"/>
         <source></source>
         <translation>AllowUpTo</translation>
     </message>
     <message id="mw.status.service_unavailable">
-        <location filename="../mainwindow.cpp" line="76"/>
+        <location filename="../mainwindow.cpp" line="77"/>
         <source></source>
         <translation>Service unavailable</translation>
     </message>
     <message id="mw.status.sending">
-        <location filename="../mainwindow.cpp" line="118"/>
+        <location filename="../mainwindow.cpp" line="120"/>
         <source></source>
         <translation>Sending</translation>
     </message>
     <message id="rule.payload.none">
-        <location filename="../mainwindow.cpp" line="197"/>
-        <location filename="../mainwindow.cpp" line="350"/>
+        <location filename="../mainwindow.cpp" line="199"/>
+        <location filename="../mainwindow.cpp" line="349"/>
         <location filename="../rulemetadatamanager.cpp" line="23"/>
         <location filename="../rulemetadatamanager.cpp" line="39"/>
         <source></source>
         <translation>None</translation>
     </message>
     <message id="mw.status.ready">
-        <location filename="../mainwindow.cpp" line="231"/>
+        <location filename="../mainwindow.cpp" line="234"/>
         <source></source>
         <translation>Ready</translation>
     </message>
     <message id="mw.status.modify_failed">
-        <location filename="../mainwindow.cpp" line="249"/>
-        <location filename="../mainwindow.cpp" line="258"/>
-        <location filename="../mainwindow.cpp" line="315"/>
-        <location filename="../mainwindow.cpp" line="388"/>
+        <location filename="../mainwindow.cpp" line="252"/>
+        <location filename="../mainwindow.cpp" line="261"/>
+        <location filename="../mainwindow.cpp" line="314"/>
+        <location filename="../mainwindow.cpp" line="400"/>
+        <location filename="../mainwindow.cpp" line="422"/>
         <source></source>
         <translation>Modify failed: %1</translation>
     </message>
     <message id="mw.status.reordered">
-        <location filename="../mainwindow.cpp" line="270"/>
+        <location filename="../mainwindow.cpp" line="273"/>
         <source></source>
         <translation>Reordered</translation>
     </message>
     <message id="mw.status.modified">
-        <location filename="../mainwindow.cpp" line="393"/>
+        <location filename="../mainwindow.cpp" line="406"/>
         <source></source>
         <translation>Modified</translation>
+    </message>
+    <message id="mw.status.no_selection">
+        <location filename="../mainwindow.cpp" line="414"/>
+        <source></source>
+        <translation>Select a row in the table first</translation>
+    </message>
+    <message id="mw.delete.title">
+        <location filename="../mainwindow.cpp" line="426"/>
+        <source></source>
+        <translation>Delete rule</translation>
+    </message>
+    <message id="mw.delete.question">
+        <location filename="../mainwindow.cpp" line="427"/>
+        <source></source>
+        <translation>Delete rule UID %1? This cannot be undone.</translation>
+    </message>
+    <message id="mw.status.delete_failed">
+        <location filename="../mainwindow.cpp" line="434"/>
+        <source></source>
+        <translation>Delete failed: UID %1</translation>
+    </message>
+    <message id="mw.status.deleted">
+        <location filename="../mainwindow.cpp" line="438"/>
+        <source></source>
+        <translation>Rule deleted</translation>
     </message>
     <message id="ew.title.create">
         <location filename="../editwindow.cpp" line="141"/>
@@ -501,24 +527,24 @@ Discard changes?</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="370"/>
+        <location filename="../mainwindow.cpp" line="369"/>
         <source>无效输入</source>
         <translation type="unfinished">Invalid input</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="371"/>
+        <location filename="../mainwindow.cpp" line="370"/>
         <source>Payload 不符合要求：%1
 是否丢弃本次修改？</source>
         <translation>Payload not satisfying requirement: %1
 Discard changes?</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="372"/>
+        <location filename="../mainwindow.cpp" line="371"/>
         <source>丢弃修改</source>
         <translation>Discard Changes</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="373"/>
+        <location filename="../mainwindow.cpp" line="372"/>
         <source>返回继续编辑</source>
         <translation>Discard Changes</translation>
     </message>

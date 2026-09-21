@@ -11,6 +11,7 @@
 #include <QMessageBox>
 #include <QPushButton>
 
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -90,6 +91,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     connect(ui->acRefreshRule, &QAction::triggered, this, &MainWindow::loadRules);
     connect(ui->acNewRule, &QAction::triggered, this, [&]() { ew->showCreate(); });
+    connect(ui->acDeleteRule, &QAction::triggered, this, &MainWindow::onDeleteRule);
 
     connect(ui->acAboutQt, &QAction::triggered, this, []{ QApplication::aboutQt(); });
 
@@ -228,6 +230,7 @@ void MainWindow::onRulesListResponse(std::vector<RuleEntry> rl)
     }
 
     m_loadingRules = false;
+    m_lastSubmitted.clear();
     statusLabel->setText(qtTrId("mw.status.ready"));
 }
 
@@ -279,10 +282,6 @@ void MainWindow::onTableRowsMoved()
 void MainWindow::onRuleCellChanged(QTableWidgetItem* item)
 {
     if (item == nullptr || m_loadingRules || m_reorderingRows) {
-        return;
-    }
-
-    if (ui->tbRules->currentItem() != item) {
         return;
     }
 
@@ -381,6 +380,19 @@ void MainWindow::onRuleCellChanged(QTableWidgetItem* item)
         return;
     }
 
+    // The delegates write the user role and the display role separately, so one edit
+    // arrives here twice; only the first one needs to reach the service.
+    const QString submitKey = QStringLiteral("%1|%2|%3|%4|%5|%6")
+                                  .arg(uid)
+                                  .arg(static_cast<int>(type))
+                                  .arg(static_cast<int>(etype))
+                                  .arg(static_cast<int>(action))
+                                  .arg(static_cast<int>(allow))
+                                  .arg(payloadText);
+    if (submitKey == m_lastSubmitted) {
+        return;
+    }
+
     QString errorMessage;
     const bool ok = mgr.modifyRuleByType(uid, type, etype, action, allow, payloadText, &errorMessage);
 
@@ -390,7 +402,40 @@ void MainWindow::onRuleCellChanged(QTableWidgetItem* item)
         return;
     }
 
+    m_lastSubmitted = submitKey;
     statusLabel->setText(qtTrId("mw.status.modified"));
+    QTimer::singleShot(0, this, &MainWindow::loadRules);
+}
+
+void MainWindow::onDeleteRule()
+{
+    const int row = ui->tbRules->currentRow();
+    if (row < 0) {
+        statusLabel->setText(qtTrId("mw.status.no_selection"));
+        return;
+    }
+
+    QTableWidgetItem* uidItem = ui->tbRules->item(row, RTC_Uid);
+    bool ok = false;
+    const int uid = uidItem ? uidItem->data(Qt::DisplayRole).toInt(&ok) : 0;
+    if (!ok || uid <= 0) {
+        statusLabel->setText(QString(qtTrId("mw.status.modify_failed")).arg(QStringLiteral("invalid uid value")));
+        return;
+    }
+
+    const auto answer = QMessageBox::question(this, qtTrId("mw.delete.title"),
+                                              qtTrId("mw.delete.question").arg(uid),
+                                              QMessageBox::Yes | QMessageBox::No, QMessageBox::No);
+    if (answer != QMessageBox::Yes) {
+        return;
+    }
+
+    if (!AutoSudoSdk::DeleteRule(static_cast<uint16_t>(uid))) {
+        statusLabel->setText(QString(qtTrId("mw.status.delete_failed")).arg(uid));
+        return;
+    }
+
+    statusLabel->setText(qtTrId("mw.status.deleted"));
     QTimer::singleShot(0, this, &MainWindow::loadRules);
 }
 
