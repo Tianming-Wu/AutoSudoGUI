@@ -2,6 +2,8 @@
 #include "ui_editwindow.h"
 #include "rulemetadatamanager.h"
 
+#include "payloaddelegate.h"
+
 #include <QMap>
 #include <QMessageBox>
 
@@ -218,6 +220,23 @@ void EditWindow::onAccept()
 
 bool EditWindow::onCreateAccept()
 {
+    // 校验 payload
+    auto payloadResult = PayloadDelegate::validatePayload(m_type, static_cast<int>(m_etype), ui->lePayload->text());
+    if (!payloadResult.valid) {
+        QMessageBox msgBox(this);
+        msgBox.setIcon(QMessageBox::Warning);
+        msgBox.setWindowTitle(tr("无效输入"));
+        msgBox.setText(tr("Payload 不符合要求：%1\n是否丢弃本次修改？").arg(payloadResult.error));
+        QPushButton *discardBtn = msgBox.addButton(tr("丢弃修改"), QMessageBox::RejectRole);
+        QPushButton *editBtn = msgBox.addButton(tr("返回继续编辑"), QMessageBox::AcceptRole);
+        msgBox.setDefaultButton(editBtn);
+        msgBox.exec();
+        if (msgBox.clickedButton() == discardBtn) {
+            return true; // 丢弃，关闭窗口
+        }
+        // 返回继续编辑
+        return false;
+    }
     auto &mgr = RuleMetaDataManager::instance();
     QString errorMessage;
     const bool ok = mgr.createRuleByType(m_type, m_etype, m_action, m_allow, ui->lePayload->text(), &errorMessage);
@@ -232,5 +251,22 @@ bool EditWindow::onCreateAccept()
 
 void EditWindow::onModifyAccept()
 {
-    
+    // 校验 payload
+    auto payloadResult = PayloadDelegate::validatePayload(m_type, static_cast<int>(m_etype), ui->lePayload->text());
+    if (!payloadResult.valid) {
+        QMessageBox msgBox(this);
+        msgBox.setIcon(QMessageBox::Warning);
+        msgBox.setWindowTitle(tr("无效输入"));
+        msgBox.setText(tr("Payload 不符合要求：%1\n是否丢弃本次修改？").arg(payloadResult.error));
+        QPushButton *discardBtn = msgBox.addButton(tr("丢弃修改"), QMessageBox::RejectRole);
+        QPushButton *editBtn = msgBox.addButton(tr("返回继续编辑"), QMessageBox::AcceptRole);
+        msgBox.setDefaultButton(editBtn);
+        msgBox.exec();
+        if (msgBox.clickedButton() == discardBtn) {
+            this->hide();
+        }
+        // 返回继续编辑
+        return;
+    }
+    // ...原有保存逻辑可在此补充...
 }

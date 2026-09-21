@@ -18,6 +18,7 @@ find_package(AutoSudoSdk REQUIRED)
 
 set(TS_FILES
     i18n/AutoSudoGUI_zh_CN.ts
+    i18n/AutoSudoGUI_en_US.ts
 )
 
 set(PROJECT_SOURCES

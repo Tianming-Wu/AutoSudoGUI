@@ -5,13 +5,16 @@
 #include "payloaddelegate.h"
 
 #include <QEvent>
+#include <QPalette>
 #include <QSignalBlocker>
 #include <QTableWidgetItem>
+#include <QMessageBox>
+#include <QPushButton>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
-    , commThread(new ServiceCommThrd())
+    , commThread(new ServiceCommThrd(this))
     , ew(new EditWindow())
 {
     ui->setupUi(this);
@@ -28,10 +31,14 @@ MainWindow::MainWindow(QWidget *parent)
         qtTrId("rule.field.order"), qtTrId("rule.field.uid"), qtTrId("rule.field.type"),
         qtTrId("rule.field.etype"), qtTrId("rule.field.action"), qtTrId("rule.field.payload"), qtTrId("rule.field.allow_up_to")
     });
-    ui->tbRules->horizontalHeader()->setStretchLastSection(true);
+    // ui->tbRules->horizontalHeader()->setStretchLastSection(true);
+    ui->tbRules->horizontalHeader()->setSectionResizeMode(RTC_Payload, QHeaderView::Stretch);
 
     // Set some column width
-    ui->tbRules->setColumnWidth(RTC_Uid, 50);
+    ui->tbRules->setColumnWidth(RTC_Uid, 40);
+    ui->tbRules->setColumnWidth(RTC_Type, 140);
+
+    ui->tbRules->setColumnWidth(RTC_AllowUpTo, 60);
 
     // Keep order as internal sort key, but hide it in UI
     ui->tbRules->setColumnHidden(RTC_Order, true);
@@ -78,30 +85,27 @@ MainWindow::MainWindow(QWidget *parent)
     ui->tbRules->setSortingEnabled(false);
     refreshPriorityHeader();
 
-    // UI Input handing
-    connect(ui->acRefreshRule, &QAction::triggered, this, &MainWindow::loadRules);
-
     // Menu
-    connect(ui->acNewRule, &QAction::triggered, this, [&]() {
-        ew->showCreate();
-    });
+    connect(ui->acExit, &QAction::triggered, this, [&]() { this->close(); });
+
+    connect(ui->acRefreshRule, &QAction::triggered, this, &MainWindow::loadRules);
+    connect(ui->acNewRule, &QAction::triggered, this, [&]() { ew->showCreate(); });
+
+    connect(ui->acAboutQt, &QAction::triggered, this, []{ QApplication::aboutQt(); });
 
     // Status Bar
     statusLabel = new QLabel();
     ui->statusBar->addWidget(statusLabel);
-
-    // Startup the comm thread
-    if (!commThread->isRunning()) {
-        commThread->start();
-    }
 
     QTimer::singleShot(0, this, &MainWindow::loadRules); // Load rules after the event loop starts
 }
 
 MainWindow::~MainWindow()
 {
-    commThread->quit();
-    commThread->wait();
+    if (commThread != nullptr && commThread->isRunning()) {
+        commThread->quit();
+        commThread->wait();
+    }
     
     // ui will manage statusLabel's lifecycle, no need to delete it separately
     delete ui;
@@ -160,6 +164,7 @@ void MainWindow::onRulesListResponse(std::vector<RuleEntry> rl)
         // UID column
         QTableWidgetItem* uidItem = new QTableWidgetItem();
         uidItem->setData(Qt::DisplayRole, static_cast<int>(re.uid));
+        uidItem->setFlags(uidItem->flags() & ~Qt::ItemIsEditable);
         ui->tbRules->setItem(row, RTC_Uid, uidItem);
 
         // Type column - display localized name, store raw value
@@ -187,10 +192,14 @@ void MainWindow::onRulesListResponse(std::vector<RuleEntry> rl)
         QTableWidgetItem* payloadItem = new QTableWidgetItem();
         const auto payloadConstraint = mgr.getPayloadConstraint(type);
         const QString payloadText = mgr.payloadToDisplayText(re);
-        payloadItem->setData(Qt::DisplayRole, payloadText);
         payloadItem->setData(Qt::UserRole, payloadText);
         if (payloadConstraint.type == PayloadConstraint::NoPayload) {
+            payloadItem->setData(Qt::DisplayRole, payloadText.isEmpty() ? qtTrId("rule.payload.none") : payloadText);
             payloadItem->setFlags(payloadItem->flags() & ~Qt::ItemIsEditable);
+            payloadItem->setForeground(ui->tbRules->palette().brush(QPalette::Disabled, QPalette::Text));
+        } else {
+            payloadItem->setData(Qt::DisplayRole, payloadText);
+            payloadItem->setForeground(QBrush());
         }
         ui->tbRules->setItem(row, RTC_Payload, payloadItem);
 
@@ -310,12 +319,68 @@ void MainWindow::onRuleCellChanged(QTableWidgetItem* item)
 
     const uint16_t uid = static_cast<uint16_t>(uidItem->data(Qt::DisplayRole).toInt());
     const auto type = static_cast<Type>(typeItem->data(Qt::UserRole).toInt());
+
+    auto &mgr = RuleMetaDataManager::instance();
+
+    if (item->column() == RTC_Type) {
+        const auto oldEType = static_cast<EType>(etypeItem->data(Qt::UserRole).toInt());
+        const auto availableETypes = mgr.getAvailableETypes(type);
+
+        bool oldETypeStillAvailable = false;
+        for (const auto &pair : availableETypes) {
+            if (pair.second == oldEType) {
+                oldETypeStillAvailable = true;
+                break;
+            }
+        }
+
+        if (!oldETypeStillAvailable && !availableETypes.empty()) {
+            const auto fallbackEType = availableETypes.front().second;
+            QSignalBlocker blockTableSignals(ui->tbRules);
+            etypeItem->setData(Qt::UserRole, static_cast<int>(fallbackEType));
+            etypeItem->setData(Qt::DisplayRole, mgr.getETypeDisplayName(fallbackEType));
+        }
+
+        const auto payloadConstraint = mgr.getPayloadConstraint(type);
+        const QString rawPayload = payloadItem->data(Qt::UserRole).toString();
+        Qt::ItemFlags payloadFlags = payloadItem->flags();
+        if (payloadConstraint.type == PayloadConstraint::NoPayload) {
+            payloadFlags &= ~Qt::ItemIsEditable;
+            payloadItem->setFlags(payloadFlags);
+            payloadItem->setData(Qt::DisplayRole, rawPayload.isEmpty() ? qtTrId("rule.payload.none") : rawPayload);
+            payloadItem->setForeground(ui->tbRules->palette().brush(QPalette::Disabled, QPalette::Text));
+        } else {
+            payloadFlags |= Qt::ItemIsEditable;
+            payloadItem->setFlags(payloadFlags);
+            payloadItem->setData(Qt::DisplayRole, rawPayload);
+            payloadItem->setForeground(QBrush());
+        }
+    }
+
     const auto etype = static_cast<EType>(etypeItem->data(Qt::UserRole).toInt());
     const auto action = static_cast<Action>(actionItem->data(Qt::UserRole).toInt());
     const auto allow = static_cast<PermissionLevel>(allowItem->data(Qt::UserRole).toInt());
-    const QString payloadText = payloadItem->data(Qt::DisplayRole).toString();
+    const QString payloadText = payloadItem->data(Qt::UserRole).toString();
 
-    auto &mgr = RuleMetaDataManager::instance();
+    // 校验 payload
+    auto payloadResult = PayloadDelegate::validatePayload(type, static_cast<int>(etype), payloadText);
+    if (!payloadResult.valid) {
+        QMessageBox msgBox(this);
+        msgBox.setIcon(QMessageBox::Warning);
+        msgBox.setWindowTitle(tr("无效输入"));
+        msgBox.setText(tr("Payload 不符合要求：%1\n是否丢弃本次修改？").arg(payloadResult.error));
+        QPushButton *discardBtn = msgBox.addButton(tr("丢弃修改"), QMessageBox::RejectRole);
+        QPushButton *editBtn = msgBox.addButton(tr("返回继续编辑"), QMessageBox::AcceptRole);
+        msgBox.setDefaultButton(editBtn);
+        msgBox.exec();
+        if (msgBox.clickedButton() == discardBtn) {
+            QSignalBlocker blockTableSignals(ui->tbRules);
+            loadRules();
+        }
+        // 返回继续编辑则什么都不做
+        return;
+    }
+
     QString errorMessage;
     const bool ok = mgr.modifyRuleByType(uid, type, etype, action, allow, payloadText, &errorMessage);
 

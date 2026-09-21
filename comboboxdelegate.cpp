@@ -16,7 +16,6 @@ QWidget *ComboBoxDelegate::createEditor(QWidget *parent, const QStyleOptionViewI
                                         const QModelIndex &index) const
 {
     Q_UNUSED(option);
-    Q_UNUSED(index);
 
     QComboBox *editor = new QComboBox(parent);
     auto &mgr = RuleMetaDataManager::instance();
@@ -29,8 +28,22 @@ QWidget *ComboBoxDelegate::createEditor(QWidget *parent, const QStyleOptionViewI
         break;
     }
     case RuleEType: {
-        for(auto e : mgr.getETypeMap().keys()) {
-            editor->addItem(mgr.getETypeDisplayName(e), QVariant::fromValue(static_cast<uint16_t>(e)));
+        constexpr int typeColumn = 2;
+        const QModelIndex typeIndex = index.sibling(index.row(), typeColumn);
+        bool ok = false;
+        const int typeRaw = typeIndex.data(Qt::UserRole).toInt(&ok);
+
+        if (ok) {
+            const auto type = static_cast<Type>(typeRaw);
+            const auto availableETypes = mgr.getAvailableETypes(type);
+            for (const auto &pair : availableETypes) {
+                const auto etype = pair.second;
+                editor->addItem(mgr.getETypeDisplayName(etype), QVariant::fromValue(static_cast<uint16_t>(etype)));
+            }
+        }
+
+        if (editor->count() == 0) {
+            editor->setEnabled(false);
         }
         break;
     }

@@ -13,7 +13,7 @@ class ServiceCommThrd : public QThread
 {
     Q_OBJECT
 public:
-    ServiceCommThrd();
+    explicit ServiceCommThrd(QObject *parent = nullptr);
 
     void run() override;
 
@@ -24,9 +24,6 @@ public slots:
 signals:
     void receivedRuleList(std::vector<RuleEntry> response);
     void ConnectionTimedOut();
-
-private:
-    RuleClient client;
 };
 
 #endif // SERVICECOMMTHRD_H

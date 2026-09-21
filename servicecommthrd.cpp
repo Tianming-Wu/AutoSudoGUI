@@ -1,11 +1,8 @@
 #include "servicecommthrd.h"
 
-ServiceCommThrd::ServiceCommThrd()
+ServiceCommThrd::ServiceCommThrd(QObject *parent)
+    : QThread(parent)
 {
-
-    // Connections are established on-demand for each operation,
-    // so this is just a placeholder.
-    client.connect();
 }
 
 void ServiceCommThrd::requestRules()
