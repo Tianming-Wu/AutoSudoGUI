@@ -72,6 +72,19 @@ target_link_libraries(AutoSudoGUI PRIVATE
     SharedCppLib2::logt
 )
 
+# The rule editor talks to the control channel, which the service creates for
+# administrators only. A release build therefore asks for elevation in its manifest, so
+# Windows shows the UAC prompt when the tool starts, and the service can rely on the
+# caller's token.
+#
+# A debug build is left alone: it is the one the service accepts unelevated rule callers
+# from, and an unelevated process is also the one a debugger can attach to without
+# running elevated itself.
+target_link_options(AutoSudoGUI PRIVATE
+    "$<$<CONFIG:Debug>:/MANIFESTUAC:NO>"
+    "$<$<NOT:$<CONFIG:Debug>>:/MANIFESTUAC:level='requireAdministrator'>"
+)
+
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
 # If you are developing for iOS or macOS you should consider setting an
 # explicit, fixed bundle identifier manually though.
