@@ -40,8 +40,8 @@
         <translation>常量规则</translation>
     </message>
     <message id="rule.payload.none">
-        <location filename="../mainwindow.cpp" line="199"/>
-        <location filename="../mainwindow.cpp" line="349"/>
+        <location filename="../mainwindow.cpp" line="203"/>
+        <location filename="../mainwindow.cpp" line="353"/>
         <location filename="../rulemetadatamanager.cpp" line="23"/>
         <location filename="../rulemetadatamanager.cpp" line="39"/>
         <source></source>
@@ -325,101 +325,125 @@
         <translation>删除规则</translation>
     </message>
     <message id="rule.field.order">
-        <location filename="../mainwindow.cpp" line="32"/>
+        <location filename="../mainwindow.cpp" line="34"/>
         <source></source>
         <translation>顺序</translation>
     </message>
     <message id="rule.field.uid">
-        <location filename="../mainwindow.cpp" line="32"/>
+        <location filename="../mainwindow.cpp" line="34"/>
         <source></source>
         <translation>UID</translation>
     </message>
     <message id="rule.field.type">
-        <location filename="../mainwindow.cpp" line="32"/>
+        <location filename="../mainwindow.cpp" line="34"/>
         <location filename="../editwindow.cpp" line="17"/>
         <source></source>
         <translation>类型</translation>
     </message>
     <message id="rule.field.etype">
-        <location filename="../mainwindow.cpp" line="33"/>
+        <location filename="../mainwindow.cpp" line="35"/>
         <location filename="../editwindow.cpp" line="18"/>
         <source></source>
         <translation>判定</translation>
     </message>
     <message id="rule.field.action">
-        <location filename="../mainwindow.cpp" line="33"/>
+        <location filename="../mainwindow.cpp" line="35"/>
         <location filename="../editwindow.cpp" line="19"/>
         <source></source>
         <translation>动作</translation>
     </message>
     <message id="rule.field.payload">
-        <location filename="../mainwindow.cpp" line="33"/>
+        <location filename="../mainwindow.cpp" line="35"/>
         <location filename="../editwindow.cpp" line="16"/>
         <source></source>
         <translation>有效值</translation>
     </message>
     <message id="rule.field.allow_up_to">
-        <location filename="../mainwindow.cpp" line="33"/>
+        <location filename="../mainwindow.cpp" line="35"/>
         <location filename="../editwindow.cpp" line="20"/>
         <source></source>
         <translation>允许至</translation>
     </message>
     <message id="mw.status.service_unavailable">
-        <location filename="../mainwindow.cpp" line="77"/>
+        <location filename="../mainwindow.cpp" line="79"/>
         <source></source>
         <translation>服务不可用</translation>
     </message>
     <message id="mw.status.sending">
-        <location filename="../mainwindow.cpp" line="120"/>
+        <location filename="../mainwindow.cpp" line="124"/>
         <source></source>
         <translation>请求中</translation>
     </message>
     <message id="mw.status.ready">
-        <location filename="../mainwindow.cpp" line="234"/>
+        <location filename="../mainwindow.cpp" line="238"/>
         <source></source>
         <translation>就绪</translation>
     </message>
     <message id="mw.status.reordered">
-        <location filename="../mainwindow.cpp" line="273"/>
+        <location filename="../mainwindow.cpp" line="277"/>
         <source></source>
         <translation>已重排</translation>
     </message>
     <message id="mw.status.no_selection">
-        <location filename="../mainwindow.cpp" line="414"/>
+        <location filename="../mainwindow.cpp" line="418"/>
         <source></source>
         <translation>请先在表格中选择一行</translation>
     </message>
     <message id="mw.delete.title">
-        <location filename="../mainwindow.cpp" line="426"/>
+        <location filename="../mainwindow.cpp" line="430"/>
         <source></source>
         <translation>删除规则</translation>
     </message>
     <message id="mw.delete.question">
-        <location filename="../mainwindow.cpp" line="427"/>
+        <location filename="../mainwindow.cpp" line="431"/>
         <source></source>
         <translation>确定删除规则 UID %1？此操作不可撤销。</translation>
     </message>
     <message id="mw.status.delete_failed">
-        <location filename="../mainwindow.cpp" line="434"/>
+        <location filename="../mainwindow.cpp" line="438"/>
         <source></source>
         <translation>删除失败：UID %1</translation>
     </message>
     <message id="mw.status.deleted">
-        <location filename="../mainwindow.cpp" line="438"/>
+        <location filename="../mainwindow.cpp" line="442"/>
         <source></source>
         <translation>规则已删除</translation>
     </message>
+    <message id="mw.status.export_failed">
+        <location filename="../mainwindow.cpp" line="459"/>
+        <source></source>
+        <translation>导出失败</translation>
+    </message>
+    <message id="mw.status.exported">
+        <location filename="../mainwindow.cpp" line="464"/>
+        <source></source>
+        <translation>已导出规则到 %1</translation>
+    </message>
+    <message id="mw.status.import_failed">
+        <location filename="../mainwindow.cpp" line="487"/>
+        <source></source>
+        <translation>导入失败</translation>
+    </message>
+    <message id="mw.status.imported">
+        <location filename="../mainwindow.cpp" line="492"/>
+        <source></source>
+        <translation>已从 %1 导入规则</translation>
+    </message>
+    <message id="mw.status.service_refused">
+        <source></source>
+        <translation>拒绝访问</translation>
+    </message>
     <message id="mw.status.modify_failed">
-        <location filename="../mainwindow.cpp" line="252"/>
-        <location filename="../mainwindow.cpp" line="261"/>
-        <location filename="../mainwindow.cpp" line="314"/>
-        <location filename="../mainwindow.cpp" line="400"/>
-        <location filename="../mainwindow.cpp" line="422"/>
+        <location filename="../mainwindow.cpp" line="256"/>
+        <location filename="../mainwindow.cpp" line="265"/>
+        <location filename="../mainwindow.cpp" line="318"/>
+        <location filename="../mainwindow.cpp" line="404"/>
+        <location filename="../mainwindow.cpp" line="426"/>
         <source></source>
         <translation>修改失败：%1</translation>
     </message>
     <message id="mw.status.modified">
-        <location filename="../mainwindow.cpp" line="406"/>
+        <location filename="../mainwindow.cpp" line="410"/>
         <source></source>
         <translation>规则已修改</translation>
     </message>
@@ -481,72 +505,106 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="50"/>
+        <location filename="../mainwindow.ui" line="53"/>
         <source>服务 (&amp;S)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="58"/>
-        <location filename="../mainwindow.ui" line="101"/>
+        <location filename="../mainwindow.ui" line="61"/>
+        <location filename="../mainwindow.ui" line="114"/>
         <source>关于 (&amp;A)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="71"/>
+        <location filename="../mainwindow.ui" line="74"/>
         <source>退出(&amp;X)</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="76"/>
+        <location filename="../mainwindow.ui" line="79"/>
         <source>刷新(F5)</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="81"/>
+        <location filename="../mainwindow.ui" line="84"/>
         <source>新建(&amp;N)</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="86"/>
+        <location filename="../mainwindow.ui" line="89"/>
         <source>删除 (&amp;D)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="91"/>
+        <location filename="../mainwindow.ui" line="94"/>
+        <source>导出到文件(&amp;E)…</source>
+        <translation>导出到文件(&amp;E)…</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="99"/>
+        <source>从文件导入(&amp;I)…</source>
+        <translation>从文件导入(&amp;I)…</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="104"/>
         <source>重启 (&amp;R)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="96"/>
+        <location filename="../mainwindow.ui" line="109"/>
         <source>临时禁用 (&amp;D)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="106"/>
+        <location filename="../mainwindow.ui" line="119"/>
         <source>关于 &amp;Qt</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="369"/>
+        <location filename="../mainwindow.cpp" line="373"/>
         <source>无效输入</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="370"/>
+        <location filename="../mainwindow.cpp" line="374"/>
         <source>Payload 不符合要求：%1
 是否丢弃本次修改？</source>
         <translation>Payload 不符合要求：%1
 是否丢弃本次修改？</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="371"/>
+        <location filename="../mainwindow.cpp" line="375"/>
         <source>丢弃修改</source>
         <translation>丢弃修改</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="372"/>
+        <location filename="../mainwindow.cpp" line="376"/>
         <source>返回继续编辑</source>
         <translation>返回继续编辑</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="448"/>
+        <location filename="../mainwindow.cpp" line="460"/>
+        <source>导出规则</source>
+        <translation>导出规则</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="450"/>
+        <location filename="../mainwindow.cpp" line="471"/>
+        <source>AutoSudo 规则文件 (*.asrules);;所有文件 (*)</source>
+        <translation>AutoSudo 规则文件 (*.asrules);;所有文件 (*)</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="469"/>
+        <location filename="../mainwindow.cpp" line="478"/>
+        <location filename="../mainwindow.cpp" line="488"/>
+        <source>导入规则</source>
+        <translation>导入规则</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="479"/>
+        <source>导入会用文件里的规则替换当前的整个规则集，当前规则将被丢弃。继续吗？</source>
+        <translation>导入会用文件里的规则替换当前的整个规则集，当前规则将被丢弃。继续吗？</translation>
     </message>
 </context>
 <context>

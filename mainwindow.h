@@ -33,6 +33,8 @@ public slots:
     void onTableRowsMoved(); // Handle table drag reorder
     void onRuleCellChanged(QTableWidgetItem* item);
     void onDeleteRule();
+    void onExportRules();
+    void onImportRules();
 
 protected:
     bool eventFilter(QObject *watched, QEvent *event) override;

@@ -6,6 +6,8 @@
 
 #include <QEvent>
 #include <QPalette>
+#include <QDir>
+#include <QFileDialog>
 #include <QSignalBlocker>
 #include <QTableWidgetItem>
 #include <QMessageBox>
@@ -76,6 +78,9 @@ MainWindow::MainWindow(QWidget *parent)
     connect(commThread, &ServiceCommThrd::ConnectionTimedOut, this, [this]() {
         statusLabel->setText(qtTrId("mw.status.service_unavailable"));
     });
+    connect(commThread, &ServiceCommThrd::OperationRefused, this, [this]() {
+        statusLabel->setText(qtTrId("mw.status.service_refused"));
+    });
     connect(ew, &EditWindow::ruleCreated, this, [this](uint16_t) {
         loadRules();
     });
@@ -92,6 +97,8 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->acRefreshRule, &QAction::triggered, this, &MainWindow::loadRules);
     connect(ui->acNewRule, &QAction::triggered, this, [&]() { ew->showCreate(); });
     connect(ui->acDeleteRule, &QAction::triggered, this, &MainWindow::onDeleteRule);
+    connect(ui->acExportRules, &QAction::triggered, this, &MainWindow::onExportRules);
+    connect(ui->acImportRules, &QAction::triggered, this, &MainWindow::onImportRules);
 
     connect(ui->acAboutQt, &QAction::triggered, this, []{ QApplication::aboutQt(); });
 
@@ -436,6 +443,56 @@ void MainWindow::onDeleteRule()
     }
 
     statusLabel->setText(qtTrId("mw.status.deleted"));
+    QTimer::singleShot(0, this, &MainWindow::loadRules);
+}
+
+void MainWindow::onExportRules()
+{
+    const QString file = QFileDialog::getSaveFileName(this, tr("导出规则"),
+                                                      QStringLiteral("AutoSudoRules.asrules"),
+                                                      tr("AutoSudo 规则文件 (*.asrules);;所有文件 (*)"));
+    if (file.isEmpty()) {
+        return;
+    }
+
+    // The file is written here, by this process, and only the rules themselves come from the
+    // service - the service is never handed a path to write to.
+    std::string error;
+    if (!AutoSudoSdk::ExportRules(fs::path(file.toStdWString()), &error)) {
+        statusLabel->setText(qtTrId("mw.status.export_failed"));
+        QMessageBox::warning(this, tr("导出规则"), QString::fromStdString(error));
+        return;
+    }
+
+    statusLabel->setText(QString(qtTrId("mw.status.exported")).arg(QDir::toNativeSeparators(file)));
+}
+
+void MainWindow::onImportRules()
+{
+    const QString file = QFileDialog::getOpenFileName(this, tr("导入规则"),
+                                                      QString(),
+                                                      tr("AutoSudo 规则文件 (*.asrules);;所有文件 (*)"));
+    if (file.isEmpty()) {
+        return;
+    }
+
+    // An import replaces the whole set, and the file can be one someone else handed over, so
+    // this is the one place where a misclick costs the current policy.
+    const auto answer = QMessageBox::question(this, tr("导入规则"),
+                                              tr("导入会用文件里的规则替换当前的整个规则集，当前规则将被丢弃。继续吗？"),
+                                              QMessageBox::Yes | QMessageBox::No, QMessageBox::No);
+    if (answer != QMessageBox::Yes) {
+        return;
+    }
+
+    std::string error;
+    if (!AutoSudoSdk::ImportRules(fs::path(file.toStdWString()), &error)) {
+        statusLabel->setText(qtTrId("mw.status.import_failed"));
+        QMessageBox::warning(this, tr("导入规则"), QString::fromStdString(error));
+        return;
+    }
+
+    statusLabel->setText(QString(qtTrId("mw.status.imported")).arg(QDir::toNativeSeparators(file)));
     QTimer::singleShot(0, this, &MainWindow::loadRules);
 }
 

@@ -22,6 +22,7 @@ public slots:
 signals:
     void receivedRuleList(std::vector<RuleEntry> response);
     void ConnectionTimedOut();
+    void OperationRefused();
 };
 
 #endif // SERVICECOMMTHRD_H

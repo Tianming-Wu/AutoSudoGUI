@@ -44,6 +44,9 @@
     <addaction name="separator"/>
     <addaction name="acNewRule"/>
     <addaction name="acDeleteRule"/>
+    <addaction name="separator"/>
+    <addaction name="acExportRules"/>
+    <addaction name="acImportRules"/>
    </widget>
    <widget class="QMenu" name="menuSrv">
     <property name="title">
@@ -84,6 +87,16 @@
   <action name="acDeleteRule">
    <property name="text">
     <string>删除 (&amp;D)</string>
+   </property>
+  </action>
+  <action name="acExportRules">
+   <property name="text">
+    <string>导出到文件(&amp;E)…</string>
+   </property>
+  </action>
+  <action name="acImportRules">
+   <property name="text">
+    <string>从文件导入(&amp;I)…</string>
    </property>
   </action>
   <action name="acSvcRestart">
